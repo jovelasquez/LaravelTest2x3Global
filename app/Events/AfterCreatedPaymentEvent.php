@@ -49,6 +49,7 @@ class AfterCreatedPaymentEvent
     public function __wakeup()
     {
         parent::__wakeup();
+        
         $this->paymentModelEvent = Payment::find($this->paymentModelEvent->id);
     }
 }

@@ -21,6 +21,7 @@ class AfterCreatedPaymentListener implements ShouldQueue
      * @var string|null
      */
     public $queue = 'notifications.fifo';
+    public $delay = 60;
 
     protected $payment;
 
@@ -60,12 +61,12 @@ class AfterCreatedPaymentListener implements ShouldQueue
         $SQSQueue = Queue::connection('notifications');
         $SQSClient = Queue::connection('notifications')->getSqs();
 
-        $response = $SQSClient->sendMessage([
-            'MessageGroupId' => 1,
-            'MessageDeduplicationId' => uniqid(),
-            'QueueUrl' => $SQSQueue->getQueue('notifications.fifo'),
-            'MessageBody' => $payload,
-        ]);
+        // $response = $SQSClient->sendMessage([
+        //     'MessageGroupId' => uniqid(),
+        //     'MessageDeduplicationId' => uniqid(),
+        //     'QueueUrl' => $SQSQueue->getQueue('notifications.fifo'),
+        //     'MessageBody' => $payload,
+        // ]);
 
         return $response->get('MessageId');
     }

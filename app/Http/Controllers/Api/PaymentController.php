@@ -53,7 +53,9 @@ class PaymentController extends ApiController
                 ->onConnection('jobs')
                 ->onQueue('jobs');
             
-            event(new AfterCreatedPaymentEvent($payment));
+            event(new AfterCreatedPaymentEvent($payment))
+                ->onConnection('notifications')
+                ->onQueue('notifications.fifo');
             
             return $this->responseSuccessMessage(trans('payment.created.success'), $payment);
         } catch (Exception $e) {
